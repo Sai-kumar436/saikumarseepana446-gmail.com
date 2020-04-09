@@ -3,66 +3,67 @@
 int main()
 {
 int Max[20][20], need[20][20], alloc[20][20], avail[20], completed[20], safeSeq[20];
-int pro, res, m, n, process, count;
+int pro, res, i, j, process, count;
 count = 0;
 
 printf("Enter the no.of processes given : ");//processes to be entered.
 scanf("%d", &pro);
 
-for(m = 0; m< pro; m++)
-	completed[m] = 0;
+for(i = 0; i< pro; i++)//time complexity= O(n)
+	completed[i] = 0;
 	 
 printf("\n\nEnter the no . of resources to be given : ");//resources to be taken
 scanf("%d", &res);
 
 printf("\n\nEnter the Max values for each process : ");// we have to enter maximum values
-for(m = 0; m < pro; m++)
+for(i = 0; i < pro; i++)//time complexity= O(n)
 {
-	printf("\nFor process %d : ", m + 1);
-	for(n = 0; n < res; n++)
-		scanf("%d", &Max[m][n]);
+	printf("\nFor process %d : ", i + 1);
+	for(j = 0; j < res; j++)//time complexity= O(n^2)
+		scanf("%d", &Max[i][j]);
 }
 
 printf("\n\nEnter the Alloc values for each process : ");//allocate the values to table
-for(m = 0; m < pro; m++)
+for(i = 0; i < pro; i++)//time complexity= O(n)
 {
 	printf("\nFor process %d : ",m + 1);
-	for(n = 0; n < res; n++)
-		scanf("%d", &alloc[m][n]);	
+	for(j = 0; j < res; j++)//time complexity= O(n^2)
+		scanf("%d", &alloc[i][j]);	
 }
 
 printf("\n\nEnter the Avail Resources : ");//enter the available resources
-for(m = 0; m < res; m++)
-		scanf("%d", &avail[m]);	
+for(i = 0; i < res; i++)//time complexity= O(n)
+		scanf("%d", &avail[i]);	
 
 
-	for(m = 0; m < pro; m++)
-		for(n = 0; n < res; n++)
-			need[m][n] = Max[m][n] - alloc[m][n];
-		
+	for(i = 0; i < pro; i++)//time complexity= O(n)
+	{
+		for(j = 0; j < res; j++)//time complexity= O(n^2)
+			need[i][j] = Max[i][j] - alloc[i][j];
+	}	
 do
 {
 	printf("\n Max table:\t Allocation table:\n");//max and allocation tables are creted for testing
-	for(m = 0; m < pro; m++)
+	for(i = 0; i < pro; i++)//time complexity= O(n)
 	{
-		for( n = 0; n < res; n++)
-			printf("%d  ", Max[m][n]);
+		for( j = 0; j < res; j++)//time complexity= O(n^2)
+			printf("%d  ", Max[i][j]);
 		printf("\t\t\t");
-		for( n = 0; n < res; n++)
-			printf("%d  ", alloc[m][n]);
+		for( j = 0; j < res; j++)//time complexity= O(n^2)
+			printf("%d  ", alloc[i][j]);
 		printf("\n");
 	}
 
 	process = -1;
 
-	for(m = 0; m < pro; m++)
+	for(i = 0; i < pro; i++)//time complexity= O(n)
 	{
-		if(completed[m] == 0)//if not completed
+		if(completed[i] == 0)//if not completed
 		{
-			process = m ;
-			for(n = 0; n < res; n++)
+			process = i ;
+			for(j = 0; j < res; j++)//time complexity= O(n^2)
 			{
-				if(avail[n] < need[m][n])
+				if(avail[j] < need[i][j])
 				{
 					process = -1;
 					break;
@@ -78,11 +79,11 @@ do
 		printf("\nProcess %d runs to completion!", process + 1);//if completed
 		safeSeq[count] = process + 1;
 		count++;
-		for(n = 0; n < res; n++)
+		for(j = 0; j < res; j++)//time complexity= O(n)
 		{
-			avail[n] += alloc[process][n];
-			alloc[process][n] = 0;
-			Max[process][n] = 0;
+			avail[j] += alloc[process][j];
+			alloc[process][j] = 0;
+			Max[process][j] = 0;
 			completed[process] = 1;
 		}
 	}
@@ -91,9 +92,9 @@ do
 if(count == pro)
 {
 	printf("\nThe system is in a safe state!!\n");
-	printf("Safe Sequence : < ");
-	for( m = 0; m < pro; m++)
-			printf("%d ", safeSeq[m]);
+	printf("Safe Sequence : < ");//safe sequence will be printed
+	for( i = 0; i < pro; i++)
+			printf("%d ", safeSeq[i]);
 	printf(">\n");
 }
 else
